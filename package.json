@@ -1,0 +1,7 @@
+{
+  "name": "vehicle-service-booking",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node tests/test.js", "build": "node --check tests/test.js" }
+}
