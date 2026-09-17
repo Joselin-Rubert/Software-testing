@@ -20,6 +20,7 @@ pipeline {
 
         stage('Build') {
             steps {
+
                 bat 'node --check js/validation.js'
                 bat 'node --check js/customer.js'
                 bat 'node --check js/vehicle.js'
@@ -28,6 +29,7 @@ pipeline {
                 bat 'node --check js/app.js'
                 bat 'node --check js/booking-page.js'
                 bat 'node --check js/admin.js'
+
             }
         }
 
@@ -39,6 +41,7 @@ pipeline {
 
         stage('Report Generation') {
             steps {
+
                 publishHTML(target: [
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
@@ -55,13 +58,20 @@ pipeline {
 
         stage('Deployment') {
             steps {
+
                 bat 'if exist deployment rmdir /s /q deployment'
+
                 bat 'mkdir deployment'
-                bat 'copy /Y index.html deployment/index.html'
-                bat 'copy /Y booking.html deployment/booking.html'
-                bat 'copy /Y admin.html deployment/admin.html'
-                bat 'xcopy /E /I /Y css deployment/css'
-                bat 'xcopy /E /I /Y js deployment/js'
+
+                bat 'xcopy /Y /I index.html deployment'
+
+                bat 'xcopy /Y /I booking.html deployment'
+
+                bat 'xcopy /Y /I admin.html deployment'
+
+                bat 'xcopy /E /I /Y css deployment\\css'
+
+                bat 'xcopy /E /I /Y js deployment\\js'
 
                 archiveArtifacts artifacts: 'deployment/**',
                                   fingerprint: true
@@ -70,6 +80,7 @@ pipeline {
     }
 
     post {
+
         success {
             echo 'AutoCare deployed successfully.'
         }
